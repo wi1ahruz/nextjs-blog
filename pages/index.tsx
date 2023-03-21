@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Date from '../components/date';
 import Layout, { siteTitle } from '../components/layout';
 import utilStyles from '../styles/utils.module.css';
-import { getSortedPostsData } from '../lib/posts';
+import { getSortedPostsData, PostMeta } from '../lib/posts';
 import { GetStaticProps } from 'next';
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -13,14 +13,8 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-interface AllPostsData {
-  id: string;
-  date: string;
-  title: string;
-}
-
 interface Props {
-  allPostsData: AllPostsData[];
+  allPostsData: PostMeta[];
 }
 
 export default function Home({ allPostsData }: Props) {

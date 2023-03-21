@@ -11,7 +11,11 @@ interface Meta {
   title: string;
 }
 
-export function getSortedPostsData() {
+export interface PostMeta extends Meta {
+  id: string;
+}
+
+export function getSortedPostsData(): PostMeta[] {
   const fileNames = fs.readdirSync(postsDirectory);
   const allPostsData = fileNames.map((fileName) => {
     const id = fileName.replace(/\.md$/, '');
@@ -40,7 +44,11 @@ export function getAllPostIds() {
   });
 }
 
-export async function getPostData(id: string) {
+export interface PostData extends PostMeta {
+  contentHtml: string;
+}
+
+export async function getPostData(id: string): Promise<PostData> {
   const fullPath = path.join(postsDirectory, `${id}.md`);
   const fileContents = fs.readFileSync(fullPath, 'utf8');
   const matterResult = matter(fileContents);
@@ -53,6 +61,6 @@ export async function getPostData(id: string) {
   return {
     id,
     contentHtml,
-    ...matterResult.data,
+    ...(matterResult.data as Meta),
   };
 }
